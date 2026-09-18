@@ -1,0 +1,222 @@
+===============================================================================
+                        ZEKOS & LYRA: MASTER PRODUCT PLAN
+               The Living Hearth & Autonomous Operating System
+===============================================================================
+
+Brand:           ZEKOS
+AI Assistant:    LYRA (Wake-word: "Hey Lyra!")
+Tagline:         The Heart of the Kitchen
+Architecture:    Version 1.0.0 (Grand Master Specification)
+Date:            2026-09-18
+Author:          Luna (Chief Architect) for Sir
+
+-------------------------------------------------------------------------------
+1. BRAND IDENTITY & ETHOS
+-------------------------------------------------------------------------------
+* BRAND: ZEKOS
+  - Etymology: Neoclassical synthesis of "Oikos" (the sacred household & home)
+    and "Zeo" (to boil, to live, to bubble with energy).
+  - Positioning: Industrial-grade smart kitchen hardware & ambient computing.
+  - Character: Premium, durable, grounded, modern luxury (like Dyson/Sonos).
+
+* AI COMPANION: LYRA
+  - Etymology: The celestial harp constellation; symbol of harmony and melody.
+  - Wake-Word: "Hey Lyra!" (/heɪ ˈlaɪ.rə/)
+  - Character: Empathetic, culinarily expert, respectful, fast, and grounded.
+  - Languages: Multilingual across 14+ languages and Indic code-switched 
+    dialects (Hinglish, Tamil-English, etc.).
+
+-------------------------------------------------------------------------------
+2. HARDWARE SPECIFICATIONS & PHYSICAL ENCLOSURE (ZEKOS POD)
+-------------------------------------------------------------------------------
+* Form Factor: Phone-sized, wall-mounted ambient terminal.
+* Dimensions: 142mm (H) x 76mm (W) x 18mm (D).
+* Mount: Magnetic quick-release bracket with recessed 5V USB-C dock.
+* IP65 Environmental Sealing:
+  - Resists aerosolized mustard oil & ghee vapors (Tadka resistance).
+  - Chemically-strengthened oleophobic/hydrophobic front glass (anti-turmeric).
+  - Breathable acoustic Gore-Tex membranes over dual microphone ports.
+  - Internal silicone O-rings on rotary volume wheel and tactile switches.
+
+* Bill of Materials (BoM Breakdown @ 10,000 Scale):
+  1. Main Compute SoC: Rockchip RK3566 (Quad Cortex-A55 @ 1.8GHz, NPU)  $12.50
+  2. Memory & Flash: 2GB LPDDR4 + 16GB eMMC 5.1 Storage                  $5.20
+  3. Display: 4.5-inch IPS LCD (800x480, 450 nits) with Oleophobic Glass  $6.80
+  4. Audio Frontend: Dual Knowles MEMS Microphones + Conexant Audio DSP   $2.40
+  5. Speaker: 5W High-Efficiency Neodymium Transducer with Cavity        $1.60
+  6. Controls: Knurled Rotary Wheel with O-Ring + 2 Tactile Switches     $1.10
+  7. Wireless: Dual-Band Wi-Fi 802.11ac + Bluetooth 5.2 Ceramic Antenna   $1.80
+  8. Enclosure: Fire-retardant ABS/PC + Neodymium Magnetic Wall Plate    $3.10
+  -----------------------------------------------------------------------------
+  TOTAL HARDWARE BoM:                                                    $34.50
+  TARGET RETAIL PRICE:                                      Rs 4,499 ($54.00)
+
+-------------------------------------------------------------------------------
+3. THE 20-FEATURE MASTER KITCHEN SUITE
+-------------------------------------------------------------------------------
+[CATEGORY 1: COOKING CRISIS & DISASTER RESCUE]
+01. Over-Salt & Over-Spice Rescue:
+    Mom asks how to fix excess salt/chilli. Lyra gives immediate chemistry 
+    remedies (drop 2 peeled potato quarters to absorb sodium, or add fresh cream/curd).
+02. Acoustic Boil-Over Sizzle Warning:
+    Acoustic model detects 3-5 kHz sizzle when boiling milk/dal spills on the 
+    hot burner plate; sounds urgent warning: "Warning: Pot boiling over!"
+03. Burnt Pot Recovery Guide:
+    Provides immediate salvage steps: "Do not scrape base; transfer top layer to 
+    clean pot, add 1 tsp ghee to mask smokiness."
+
+[CATEGORY 2: PRECISION HANDS-FREE COOKING ASSISTANCE]
+04. Acoustic Pressure Cooker Whistle Counter:
+    Counts 85-90 dB steam whistles on screen (Whistles: 2 / 3) and alerts to 
+    turn off the burner upon the 3rd whistle.
+05. Dual Named Kitchen Timers:
+    Runs side-by-side timers hands-free ("15 mins Biryani Dum, 8 mins Eggs").
+06. Rotary Wheel Recipe Step Advancing:
+    Mom nudges the knurled wheel with an elbow/knuckle to advance recipe steps 
+    without smudging the display with dough or oil.
+07. Glanceable Single-Micro-Step Typography:
+    Displays only the active step in giant 36pt font readable from 6 feet away.
+08. Instant Spoken Unit Converter:
+    Hands-free voice conversions ("1 cup besan = 120 grams; 1 katori = 150 ml").
+09. Dynamic Portion Scaler:
+    Instantly rescales ingredients, spices, and water ratios for extra guests.
+10. Air Fryer & Microwave Translator:
+    Translates deep-fry/oven recipes into air fryer temperatures and timings.
+
+[CATEGORY 3: FOOD PRESERVATION & LEFTOVER ALCHEMY]
+11. The Leftover Alchemist (Transformation Mode):
+    Turns leftovers into gourmet meals (Leftover Dal -> Dal Parathas; Leftover 
+    Rice -> Lemon Rice or Rice Cutlets; Leftover Idlis -> Podi Ghee Roast).
+12. Biological Decay Clock & Waste Mitigation:
+    Tracks shelf-life decay curves (potatoes: 14 days, tomatoes: 5 days). 
+    Proactively recommends potato dishes before rot sets in.
+13. 7:00 AM Tiffin / Lunchbox Mode:
+    Filters recipes for dry, non-leaking, non-soggy lunchbox items that stay fresh 
+    for 6 hours without refrigeration.
+14. Vegetable Freshness & Storage Advisor:
+    Provides storage tips (e.g. wrap coriander in dry towel, store unwashed).
+
+[CATEGORY 4: HEALTH, FASTING & CULTURAL CONTEXT]
+15. Vrat / Fasting / Cultural Calendar Mode:
+    1-touch/voice trigger locks out onions/garlic; surfaces Sabudana Khichdi, 
+    Kuttu Puri, Samak Chawal, and Makhana Kheer.
+16. Post-Meal Digestive Infusion Pairing:
+    Suggests traditional digestive drinks (warm water with roasted ajwain after 
+    heavy legumes to prevent bloating).
+17. Diabetic & Macro Smart Swaps:
+    Suggests blending 25% ragi/foxtail millet into atta to lower glycemic spikes.
+
+[CATEGORY 5: COMMERCE, AUDIO & SMART UTILITIES]
+18. In-App Household Wallet & JIT Voice Dispatch:
+    Mom says: "Hey Lyra, order a 10 Rs milk packet fast!"
+    Learns habits in 3 orders, then confirms in 1 second: "10 Rs Nandini on 
+    Zepto via wallet, right Mom?" -> "Ha" -> Dispatched!
+    Includes Smart Cart Consolidation to eliminate small-cart delivery fees.
+19. Spotify Integration with Hardware AEC:
+    5W speaker streams music/podcasts while hardware Acoustic Echo Cancellation 
+    allows Mom to speak to Lyra without music interference.
+20. Hands-Free Ambient Countertop Illuminator:
+    Downward-firing warm LED strip softly illuminates the kitchen counter at night.
+
+-------------------------------------------------------------------------------
+4. EMPIRICAL DATA GROUNDING STACK (ZERO FAKE OR DUMB DATA)
+-------------------------------------------------------------------------------
+* Nutrition & Glycemic Data:
+  Strictly sourced from ICMR-NIN (Indian Council of Medical Research - National 
+  Institute of Nutrition) Indian Food Composition Tables (IFCT 2017) and USDA 
+  FoodData Central Foundation Foods Database.
+* Agentic Commerce Protocols:
+  Pine Labs P3P (HTTP 402 native payment standard) and Grantex Spend Guardrail 
+  token specifications.
+* Quick-Commerce Dark Store Schemas:
+  Real-world SKU taxonomies and live inventory models matching Blinkit, Zepto, 
+  and Swiggy Instamart dark stores.
+* Acoustic Signature Library:
+  Calibrated domestic noise databases for 85-90 dB steam whistles, 72 dB exhaust 
+  fans, and 3-5 kHz boil-over hisses.
+
+-------------------------------------------------------------------------------
+5. INTERFACE DIVISION OF LABOR: COMPANION APP VS. WALL TERMINAL
+-------------------------------------------------------------------------------
+* COMPANION MOBILE APP (The Configuration Anchor):
+  - Onboarding & BLE pairing away from kitchen grease.
+  - Setup of family members, health tags, and spice tolerance sliders.
+  - Setup of Cultural Origin vs Current Location (e.g. Erode family in Jaipur).
+  - Kitchen Wallet top-up via UPI / Credit Card and daily spend ceilings.
+  - Spotify account OAuth linking.
+  - Voluntary portion absence marking (No daily spamming).
+
+* ZEKOS POD WALL TERMINAL (The Action & Execution Terminal):
+  - Hands-free conversational meal recommendations.
+  - 1-Second voice grocery confirmation ("Order 10 Rs milk?").
+  - Emergency disaster rescue (salt/spice/burn fixes).
+  - Cooker whistle counting & dual named timers.
+  - Tactile volume control and recipe step scrolling.
+  - Spotify music playback with voice ducking.
+
+* UI/UX DESIGN SYSTEM: WARM TACTILE MINIMALISM & RICH WHITESPACE
+  - Breathing Rule: Minimum 32px gutters, 64px margins. Max 3 cards per screen.
+  - Organic Palette: Ceramic Bone (#FBF9F6), Charcoal Ash (#141312), Terracotta
+    Clay (#C85A32), and Muted Botanical Sage (#6B7C65).
+  - Editorial Typography: Editorial Serif (Instrument Serif / Fraunces) for 
+    culinary headers + Swiss grotesque (Geist / Inter) for metrics & timers.
+  - Smooth Physics: Spring micro-interactions via Framer Motion.
+
+* PRODUCTION TECH STACK (100% FEASIBLE & BATTLE-TESTED):
+  - Mobile App: Next.js 16 (React 19 Server Components) PWA & React Native (Expo)
+    with Tailwind CSS v4, Lucide icons, and Framer Motion.
+  - Wall Kiosk OS: Hardware-accelerated Chromium on Rockchip RK3566 Linux 
+    (Wayland/Weston) with local SQLite cache for offline resilience.
+  - Data & State Core: Supabase Postgres 16 with RLS, Realtime WebSockets, 
+    and pgvector for household taste memory embeddings.
+  - Agentic Commerce Rails: Pine Labs P3P protocol client (HTTP 402) with 
+    Grantex spend authorization tokens.
+  - Voice & Audio: Hardware-loopback AEC DSP via ALSA/PulseAudio + librespot 
+    embedded Spotify daemon + Gnani Indic speech models.
+
+-------------------------------------------------------------------------------
+6. THE CULTURAL HERITAGE MATRIX (THE MIGRANT PALATE GRAPH)
+
+-------------------------------------------------------------------------------
+* Example: An Erode, Tamil Nadu family residing in Jaipur, Rajasthan.
+* Heritage Baseline:
+  - Cuisine: Kongu Nadu (Tamil).
+  - Core Flavors: Shallots, curry leaves, sesame oil, black pepper, ponni rice.
+* Geographical Market Adaptation:
+  - Jaipur kiranas lack shallots (sambar vengayam) and drumstick leaves.
+  - Lyra automatically calculates culinary substitutions:
+    * Replaces shallots with small sweet red onions + 1/4 tsp jaggery.
+    * Replaces drumstick leaves with tender spinach/methi blend + roasted cumin.
+  - Offers monthly bulk courier of authentic spices & rice via Delhivery.
+
+-------------------------------------------------------------------------------
+7. INTELLECTUAL PROPERTY & PATENT CLAIMS
+-------------------------------------------------------------------------------
+1. Patent 1 (Apparatus): Dedicated Wall-Mounted Ambient Kitchen Computing 
+   Terminal with Sealed Rotary Control, Acoustic Transducer Membranes, and 
+   Oleophobic Display.
+2. Patent 2 (Method): Dynamic Household Culinary Knowledge Graph with Spoken 
+   Negative Constraint Recipe Adaptation and Biological Decay Tensors.
+3. Patent 3 (System): Autonomous Micro-Delegated Quick Commerce Replenishment 
+   Utilizing HTTP 402 Protocols and Smart Cart Delivery Surcharge Consolidation.
+4. Patent 4 (Acoustic): Acoustic Event Detection System for Domestic Cookware 
+   Whistle Counting and High-Frequency Liquid Boil-Over Recognition.
+
+-------------------------------------------------------------------------------
+8. VENTURE UNIT ECONOMICS
+-------------------------------------------------------------------------------
+* Target Market: 15 Million urban households in India Tier-1 metros (Rs 4.5 
+  Lakh Crore GMV) + 45 Million international diaspora households.
+* Blended Monthly ARPU:     Rs 1,049 ($12.60)
+  - B2C Software Sub:       Rs   299
+  - Q-Commerce 4% Take:     Rs   600
+  - Brand Sponsorships:     Rs   150
+* Monthly COGS:             Rs   165
+* Gross Contribution Margin: Rs   884 (84.3%)
+* Customer Acquisition Cost: Rs 1,750
+* Payback Period:           1.98 Months
+* Lifetime Value (36 Mos):  Rs 31,824
+* LTV / CAC Ratio:          18.2x
+===============================================================================
+                       END OF MASTER PRODUCT SPECIFICATION
+===============================================================================

@@ -1,0 +1,29 @@
+# Study Notebooks & Scratch (Scribe Protocol Git Exclusion Safeguard)
+*_MASTER_STUDY_NOTEBOOK.md
+scratch/
+*.pdf
+*.pptx
+*.docx
+*.key
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env*.local
+.env.mcp
+
+# Dependencies & Build Artifacts
+node_modules/
+.next/
+dist/
+build/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
