@@ -117,8 +117,24 @@ Author:          Luna (Chief Architect) for Sir
     allows Mom to speak to Lyra without music interference.
 20. Hands-Free Ambient Countertop Illuminator:
     Downward-firing warm LED strip softly illuminates the kitchen counter at night.
+21. Illness-Resilient Voice Biometrics & Domestic Privacy Shield:
+    Combines acoustic harmonics with idiolect/syntax modeling to identify Mom 
+    even when suffering from a severe cold or fever. When congestion is detected, 
+    Lyra adapts biometric thresholds and offers empathetic care (hot ginger tea / 
+    rasam). Lyra never airs private medical diagnoses or financial balances over 
+    the loudspeaker; falls back to a 4-digit spoken PIN or app push for wallet debits.
+22. Multimedia Recipe Ingestion Engine ("Share to ZEKOS"):
+    Enables 1-tap recipe sharing from YouTube (Shorts & full videos), Instagram 
+    Reels, and WhatsApp audio notes. Automatically parses video transcripts/captions, 
+    extracts standardized ingredients, and reconciles against pantry stock.
+23. Mobile Home Screen Widgets (1x2 & 2x2) & Lock Screen Live Activity:
+    1x2 Glance Banner and 2x2 Hearth Square widgets in Hasami Earth styling.
+    Includes persistent Lock Screen & Dynamic Island Live Activity for real-time 
+    pressure cooker whistle counting (Whistle 2 of 3) and countdown timers.
 
 -------------------------------------------------------------------------------
+
+
 4. EMPIRICAL DATA GROUNDING STACK (ZERO FAKE OR DUMB DATA)
 -------------------------------------------------------------------------------
 * Nutrition & Glycemic Data:

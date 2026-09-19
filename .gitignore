@@ -5,6 +5,8 @@ scratch/
 *.pptx
 *.docx
 *.key
+*.zip
+
 
 # Environment Variables & Secrets
 .env

@@ -164,8 +164,21 @@ Driven by **LYRA**, an empathetic, vernacular, voice-first culinary AI assistant
     * *Mechanism*: Streams music/bhajans/podcasts through the 5W speaker while hardware-loopback Acoustic Echo Cancellation allows Mom to speak to Lyra at normal volume without music interference.
 20. **Hands-Free Ambient Countertop Illuminator**:
     * *Mechanism*: Soft downward-firing warm LED strip on the bottom rim provides gentle countertop illumination for night-time visits or subtle cooking ambiance.
+21. **Illness-Resilient Voice Biometrics & Domestic Privacy Shield**:
+    * *Mechanism*: Combines acoustic harmonics with idiolect/syntax modeling to identify Mom even when her pitch drops due to a severe cold or fever.
+    * *Empathetic Cold Detection*: When respiratory congestion is detected, Lyra adapts biometric thresholds and offers soothing care: *"Mom, you sound congested today; would you like a warm ginger-tulsi-black pepper tea or hot rasam?"*
+    * *Differential Privacy Disclosure*: Lyra provides operational culinary guidance and NEVER airs private medical diagnoses or financial totals over the loudspeaker. A 4-digit spoken PIN or mobile app push acts as a fallback for wallet orders during severe illness.
+22. **Multimedia Recipe Ingestion Engine ("Share to ZEKOS" for YouTube & Instagram Reels)**:
+    * *Mechanism*: Native OS share sheet intent allowing family members to share cooking links directly from YouTube (Shorts & full videos), Instagram Reels, TikTok, or WhatsApp audio notes.
+    * *AI Normalization*: Ingests transcripts/captions, normalizes spoken quantities (*"do chammach"* → `2 tbsp`), extracts ingredients, and reconciles against pantry stock to highlight missing items.
+23. **Mobile Home Screen Widgets & Lock Screen Live Activity**:
+    * *1x2 Glance Banner*: Shows next upcoming meal (Breakfast, Tiffin, Lunch, Dinner) + 1-tap "Eating out" portion adjustment.
+    * *2x2 Hearth Square*: Shows hero meal proposal, perishable spoilage alert, family attendance tags, and 1-tap "Approve / Swap" controls.
+    * *Lock Screen / Dynamic Island Live Activity*: Real-time cooker whistle counter (`Whistles: 2/3`) and simmer timers, preventing forgotten burning food on the stove.
 
 ---
+
+
 
 ## 4. Strict Empirical Data Grounding (Zero Fake / Assumed Data)
 
@@ -215,21 +228,36 @@ To uphold the highest engineering standards, ZEKOS & LYRA operate strictly on va
 +------------------------------------+------------------------------------------+
 ```
 
-### 5.1 UI/UX Design System: Warm Tactile Minimalism & Rich Whitespace
+### 5.1 UI/UX Design System: Hasami Earth Tactile Minimalism & Rich Whitespace
 To avoid generic "AI-like" clutter, ZEKOS enforces an organic, breathing design language:
-* **The Breathing Rule**: Minimum 32px grid gutters, 64px container margins. Maximum 3 cards per screen view. Zero text walls.
-* **Palette**: Hasami Porcelain Canvas (`#FBF9F6`), Deep Charcoal Ash (`#141312`), Terracotta Clay accents (`#C85A32`), and Muted Botanical Sage (`#6B7C65`).
+* **The Breathing Rule**: Minimum 32px grid gutters, 64px container margins. Maximum 3 cards per screen view. Zero text walls. Zero emojis.
+* **Palette (Hasami Earth)**: Hasami Porcelain Canvas (`#FBF9F5`), Raw Linen Surfaces (`#F2EEE9`), Smoked Charcoal Text (`#1E1B18`), Terracotta Clay accents (`#C85A32`), and Muted Botanical Sage (`#7A8B73`).
+* **Micro-Texture**: 2.5% opacity organic stipple grain overlay simulating matte ceramic pottery and Japanese washi paper.
 * **Typography**: Editorial Serif (*Instrument Serif / Fraunces*) for warm culinary headers paired with Swiss grotesque (*Geist / Inter*) for numbers, timers, and nutritional metrics.
 * **Micro-Interactions**: Physics-first spring animations using Framer Motion (stiffness: 300, damping: 28).
 
-### 5.2 Production Tech Stack
-* **Frontend**: Next.js 16 (App Router, Server Components by default, React 19) + PWA & React Native (Expo) with Tailwind CSS v4 and Lucide icons (1.5px stroke).
+### 5.2 Mobile Companion App Architecture (React Native & Expo SDK)
+* **Standard 5-Tab Bar**:
+  1. **Home**: Daily meal plan, 1-tap absence toggles, active food waste alert, quick actions.
+  2. **Pantry**: Living inventory by storage zone (Crisper, Counter, Pantry), freshness rings, delivery bill sync.
+  3. **Remote**: Virtual Pod controller (live whistle counter, active timers, Spotify player, countertop LED light toggle, dinner broadcast).
+  4. **Wallet**: Balance, 1-tap top-up, daily spend limits, order history.
+  5. **Profile**: Family member profiles, cultural heritage matrix, medical restrictions, spice sliders, language selector.
+* **Authentication**: Email/Password credentials + Google One-Tap with profile capture (Name, Email, Mobile, Age, Gender).
+* **Family Ingress**: Secure 6-digit household code (e.g. `ZEKOS-7492`) or universal link.
+* **Native Multilingual (i18n)**: `react-i18next` with localized translation catalogs (English, Hindi, Tamil, Telugu, Kannada, Marathi, Bengali).
+* **Logo Mark**: *The Open Vessel* (minimalist geometric ceramic hearth monogram).
+* **AI Mascot**: *The Hearth Whisper* (serene, stylized ceramic flame-leaf spirit with a sage green leaf crown).
+
+### 5.3 Production Tech Stack
+* **Mobile App**: React Native with Expo SDK + NativeWind (Tailwind CSS v4) and Lucide icons (1.5px stroke).
 * **Wall Kiosk OS**: Hardware-accelerated Chromium on Rockchip RK3566 Linux (Wayland / Weston) with local SQLite cache for offline resilience.
 * **Data & State Core**: Supabase Postgres 16 with Row Level Security (RLS), Realtime WebSockets, and `pgvector` for household palate embeddings.
 * **Agentic Commerce Rails**: Pine Labs P3P protocol client (HTTP 402) with Grantex spend authorization tokens.
 * **Audio & Voice Pipeline**: Hardware-loopback AEC DSP via ALSA/PulseAudio + `librespot` embedded Spotify daemon + Gnani Indic speech models.
 
 ---
+
 
 ## 6. The Cultural Heritage Matrix (The Migrant Palate Graph)
 

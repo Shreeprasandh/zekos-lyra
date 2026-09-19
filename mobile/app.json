@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "ZEKOS",
+    "slug": "zekos",
+    "scheme": "zekos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/brand/zekos_logo_symbol.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FBF9F5",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.zekos.kitchen"
+    },
+    "android": {
+      "package": "com.zekos.kitchen",
+      "adaptiveIcon": {
+        "backgroundColor": "#FBF9F5",
+        "foregroundImage": "./assets/brand/zekos_logo_symbol.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/brand/zekos_logo_symbol.png"
+    }
+  }
+}
