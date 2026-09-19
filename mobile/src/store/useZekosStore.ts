@@ -7,6 +7,8 @@ import {
   WalletState,
   HouseholdProfile,
   ToastEmotion,
+  UserProfile,
+  ExtractedRecipe,
 } from '../types';
 
 interface ZekosStoreState {
@@ -17,6 +19,20 @@ interface ZekosStoreState {
   // Active Mascot State
   currentMascotEmotion: ToastEmotion;
   setMascotEmotion: (emotion: ToastEmotion) => void;
+
+  // User & Authentication
+  currentUser: UserProfile;
+  authModalVisible: boolean;
+  setAuthModalVisible: (visible: boolean) => void;
+  setCurrentUser: (user: Partial<UserProfile>) => void;
+  loginWithDemo: () => void;
+  logout: () => void;
+
+  // Social Video-to-Recipe Modal
+  reelModalVisible: boolean;
+  setReelModalVisible: (visible: boolean) => void;
+  importReelRecipeToDinner: (recipe: ExtractedRecipe) => void;
+  sendRecipeToPod: (recipe: ExtractedRecipe) => void;
 
   // Household & Members
   household: HouseholdProfile;
@@ -180,12 +196,91 @@ const INITIAL_WALLET: WalletState = {
   ],
 };
 
+const INITIAL_USER: UserProfile = {
+  id: 'usr_priya_01',
+  name: 'Dr. Priya Sharma',
+  email: 'priya.sharma@zekos.internal',
+  mobile: '+91 98765 43210',
+  age: 42,
+  gender: 'Female',
+  role: 'head',
+  householdId: 'hh_sharma_01',
+  householdName: 'The Sharma Residence',
+  originCuisine: 'Kongu Nadu (Tamil Nadu)',
+  isDemo: true,
+  isAuthenticated: true,
+};
+
 export const useZekosStore = create<ZekosStoreState>((set) => ({
   activeTab: 'home',
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   currentMascotEmotion: 'toast_01_smile_neutral',
   setMascotEmotion: (emotion) => set({ currentMascotEmotion: emotion }),
+
+  // User & Authentication
+  currentUser: INITIAL_USER,
+  authModalVisible: false,
+  setAuthModalVisible: (visible) => set({ authModalVisible: visible }),
+  setCurrentUser: (user) =>
+    set((state) => ({
+      currentUser: { ...state.currentUser, ...user, isAuthenticated: true },
+      authModalVisible: false,
+      currentMascotEmotion: 'toast_02_excited_cheer',
+    })),
+  loginWithDemo: () =>
+    set({
+      currentUser: INITIAL_USER,
+      authModalVisible: false,
+      household: INITIAL_HOUSEHOLD,
+      members: INITIAL_MEMBERS,
+      currentMascotEmotion: 'toast_01_smile_neutral',
+    }),
+  logout: () =>
+    set((state) => ({
+      currentUser: { ...state.currentUser, isAuthenticated: false, isDemo: false },
+      authModalVisible: true,
+      currentMascotEmotion: 'toast_18_sad_disappointed',
+    })),
+
+  // Social Video-to-Recipe Modal
+  reelModalVisible: false,
+  setReelModalVisible: (visible) => set({ reelModalVisible: visible }),
+  importReelRecipeToDinner: (recipe) =>
+    set((state) => {
+      const homeCount = state.members.filter((m) => m.attendance === 'home').length;
+      return {
+        meals: {
+          ...state.meals,
+          dinner_today: {
+            id: 'dinner_today',
+            slot: 'dinner',
+            title: recipe.title,
+            subtitle: `${recipe.summary} • Added from ${recipe.sourceType === 'youtube' ? 'YouTube' : 'Instagram'}`,
+            prepTimeMinutes: recipe.prepTimeMinutes,
+            servings: homeCount,
+            clearsPerishablesText: `Clears ${recipe.ingredientsAvailable.slice(0, 2).join(' & ')}`,
+            isApproved: true,
+            ingredients: [...recipe.ingredientsAvailable, ...recipe.ingredientsMissing.map((m) => m.name)],
+            emotionKey: recipe.emotionKey,
+          },
+        },
+        currentMascotEmotion: recipe.emotionKey,
+        reelModalVisible: false,
+      };
+    }),
+  sendRecipeToPod: (recipe) =>
+    set((state) => ({
+      pod: {
+        ...state.pod,
+        activeDish: recipe.title,
+        currentStepNumber: 1,
+        totalSteps: recipe.steps.length,
+        currentStepText: recipe.steps[0] || 'Prepare ingredients.',
+      },
+      currentMascotEmotion: 'toast_26_chef_hat_spatula',
+      reelModalVisible: false,
+    })),
 
   household: INITIAL_HOUSEHOLD,
   members: INITIAL_MEMBERS,

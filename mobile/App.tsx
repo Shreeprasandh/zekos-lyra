@@ -11,6 +11,9 @@ import { RemoteScreen } from './src/screens/RemoteScreen';
 import { WalletScreen } from './src/screens/WalletScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 
+import { ReelRecipeModal } from './src/components/ReelRecipeModal';
+import { AuthModal } from './src/components/AuthModal';
+
 function AppContent() {
   const { activeTab } = useZekosStore();
 
@@ -37,6 +40,8 @@ function AppContent() {
       <Header />
       <View style={styles.body}>{renderActiveScreen()}</View>
       <NavigationBar />
+      <ReelRecipeModal />
+      <AuthModal />
     </SafeAreaView>
   );
 }

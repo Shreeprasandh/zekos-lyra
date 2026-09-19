@@ -6,7 +6,14 @@ import { useZekosStore } from '../store/useZekosStore';
 import { ToastEmotion } from '../types';
 
 export const Header: React.FC = () => {
-  const { currentMascotEmotion, setMascotEmotion, household, pod } = useZekosStore();
+  const {
+    currentMascotEmotion,
+    setMascotEmotion,
+    household,
+    pod,
+    currentUser,
+    setAuthModalVisible,
+  } = useZekosStore();
 
   // Emotion quick cycle on mascot tap
   const cycleEmotion = () => {
@@ -34,9 +41,15 @@ export const Header: React.FC = () => {
         />
         <View style={styles.statusRow}>
           <View style={[styles.statusDot, { backgroundColor: pod.isConnected ? HasamiEarth.statusFresh : HasamiEarth.statusExpiring }]} />
-          <Text style={styles.locationText}>
-            {household.name} • {pod.localLanLatencyMs}ms Local Wi-Fi
-          </Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => setAuthModalVisible(true)}
+            style={styles.accountBadge}
+          >
+            <Text style={styles.accountBadgeText}>
+              {currentUser.isDemo ? 'DEMO' : 'ACTIVE'} • {currentUser.name}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -91,6 +104,20 @@ const styles = StyleSheet.create({
     color: HasamiEarth.textMuted,
     fontFamily: 'System',
     fontWeight: '500',
+    letterSpacing: 0.2,
+  },
+  accountBadge: {
+    backgroundColor: HasamiEarth.surfaceLinen,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: HasamiEarth.borderSand,
+  },
+  accountBadgeText: {
+    fontSize: 10,
+    color: HasamiEarth.textMuted,
+    fontWeight: '600',
     letterSpacing: 0.2,
   },
   mascotWrapper: {

@@ -31,6 +31,7 @@ export const HomeScreen: React.FC = () => {
     approveMeal,
     swapMeal,
     setMascotEmotion,
+    setReelModalVisible,
   } = useZekosStore();
 
   const [activeSlot, setActiveSlot] = useState<'dinner' | 'lunch' | 'tiffin'>('dinner');
@@ -44,13 +45,9 @@ export const HomeScreen: React.FC = () => {
 
   const meal = meals[mealKey] || meals['dinner_today'];
 
-  const handleShareReelSim = () => {
+  const handleShareReelPress = () => {
     setMascotEmotion('toast_10_thinking_question');
-    Alert.alert(
-      'YouTube / Reel Ingested!',
-      'Parsed "Chef Ranveer Brar\'s Dal Makhani" recipe.\nYou have all ingredients in the pantry except Fresh Cream.\nAdded to Sunday dinner!',
-      [{ text: 'Great!', onPress: () => setMascotEmotion('toast_02_excited_cheer') }]
-    );
+    setReelModalVisible(true);
   };
 
   return (
@@ -210,13 +207,13 @@ export const HomeScreen: React.FC = () => {
       {/* Social Recipe Ingestion Bar */}
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={handleShareReelSim}
+        onPress={handleShareReelPress}
         style={styles.shareReelBar}
       >
         <Share2 size={16} color={HasamiEarth.primaryTerracotta} />
         <View style={styles.shareTextCol}>
           <Text style={styles.shareBarTitle}>Share Instagram Reel or YouTube Short</Text>
-          <Text style={styles.shareBarSub}>Tap to simulate importing recipe via "Share to ZEKOS"</Text>
+          <Text style={styles.shareBarSub}>Tap to extract recipe & cross-reference pantry inventory</Text>
         </View>
       </TouchableOpacity>
 

@@ -15,12 +15,24 @@ import {
   Globe,
   Sliders,
   Check,
+  User,
+  LogIn,
+  LogOut,
+  ShieldCheck,
 } from 'lucide-react-native';
 import { HasamiEarth } from '../theme/colors';
 import { useZekosStore } from '../store/useZekosStore';
 
 export const ProfileScreen: React.FC = () => {
-  const { household, members, resetToDemo, setMascotEmotion } = useZekosStore();
+  const {
+    household,
+    members,
+    currentUser,
+    setAuthModalVisible,
+    logout,
+    resetToDemo,
+    setMascotEmotion,
+  } = useZekosStore();
 
   const handleShareCode = async () => {
     try {
@@ -40,6 +52,58 @@ export const ProfileScreen: React.FC = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      {/* Active User Account Card */}
+      <View style={styles.card}>
+        <View style={styles.topRow}>
+          <Text style={styles.cardHeading}>ACTIVE USER & AUTHENTICATION</Text>
+          <View style={[styles.codeBadge, { backgroundColor: currentUser.isDemo ? HasamiEarth.accentOchreLight : HasamiEarth.accentSageLight }]}>
+            <Text style={[styles.codeText, { color: currentUser.isDemo ? HasamiEarth.primaryTerracotta : HasamiEarth.statusFresh }]}>
+              {currentUser.isDemo ? 'DEMO PREVIEW' : 'AUTHENTICATED'}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.userProfileRow}>
+          <View style={styles.userAvatar}>
+            <Text style={styles.userAvatarText}>
+              {currentUser.name
+                .split(' ')
+                .map((n) => n[0])
+                .join('')
+                .slice(0, 2)
+                .toUpperCase()}
+            </Text>
+          </View>
+          <View style={styles.userInfoCol}>
+            <Text style={styles.userName}>{currentUser.name}</Text>
+            <Text style={styles.userEmail}>{currentUser.email}</Text>
+            <Text style={styles.userDemographics}>
+              {currentUser.mobile} • {currentUser.age} yrs • {currentUser.gender}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.authBtnRow}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setAuthModalVisible(true)}
+            style={styles.switchAccountBtn}
+          >
+            <LogIn size={14} color={HasamiEarth.textEspresso} />
+            <Text style={styles.switchAccountBtnText}>Switch Account / Sign In</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={logout}
+            style={styles.logoutBtn}
+          >
+            <LogOut size={14} color={HasamiEarth.primaryTerracotta} />
+            <Text style={styles.logoutBtnText}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       {/* Household Identity Card */}
       <View style={styles.card}>
         <View style={styles.topRow}>
@@ -414,5 +478,83 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: HasamiEarth.textMuted,
+  },
+  userProfileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginVertical: 10,
+  },
+  userAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: HasamiEarth.canvasBone,
+    borderWidth: 1,
+    borderColor: HasamiEarth.borderSand,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  userAvatarText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: HasamiEarth.textEspresso,
+  },
+  userInfoCol: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: HasamiEarth.textEspresso,
+  },
+  userEmail: {
+    fontSize: 11,
+    color: HasamiEarth.textMuted,
+    marginTop: 1,
+  },
+  userDemographics: {
+    fontSize: 10,
+    color: HasamiEarth.textSubtle,
+    marginTop: 2,
+  },
+  authBtnRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 8,
+  },
+  switchAccountBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: HasamiEarth.canvasBone,
+    borderWidth: 1,
+    borderColor: HasamiEarth.borderSand,
+    paddingVertical: 9,
+    borderRadius: 10,
+    gap: 6,
+  },
+  switchAccountBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: HasamiEarth.textEspresso,
+  },
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: HasamiEarth.accentOchreLight,
+    borderWidth: 1,
+    borderColor: HasamiEarth.accentOchre,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderRadius: 10,
+    gap: 4,
+  },
+  logoutBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: HasamiEarth.primaryTerracotta,
   },
 });

@@ -94,6 +94,36 @@ export interface HouseholdProfile {
   language: 'en' | 'hi' | 'ta' | 'te' | 'kn' | 'mr' | 'bn';
 }
 
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  mobile: string;
+  age: number;
+  gender: 'Female' | 'Male' | 'Non-Binary' | 'Prefer not to say';
+  role: 'head' | 'member' | 'cook';
+  householdId: string;
+  householdName: string;
+  originCuisine: string;
+  isDemo: boolean;
+  isAuthenticated: boolean;
+}
+
+export interface ExtractedRecipe {
+  title: string;
+  sourceUrl: string;
+  sourceType: 'instagram' | 'youtube';
+  creator: string;
+  prepTimeMinutes: number;
+  servings: number;
+  summary: string;
+  ingredientsAvailable: string[];
+  ingredientsMissing: { name: string; estimatedCost: number }[];
+  steps: string[];
+  emotionKey: ToastEmotion;
+}
+
+
 // 48 Toast Mascot Emotions mapped to assets/mascot/*.png
 export type ToastEmotion =
   | 'toast_01_smile_neutral'
