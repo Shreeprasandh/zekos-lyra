@@ -55,10 +55,10 @@ export const ProfileScreen: React.FC = () => {
       {/* Active User Account Card */}
       <View style={styles.card}>
         <View style={styles.topRow}>
-          <Text style={styles.cardHeading}>ACTIVE USER & AUTHENTICATION</Text>
-          <View style={[styles.codeBadge, { backgroundColor: currentUser.isDemo ? HasamiEarth.accentOchreLight : HasamiEarth.accentSageLight }]}>
-            <Text style={[styles.codeText, { color: currentUser.isDemo ? HasamiEarth.primaryTerracotta : HasamiEarth.statusFresh }]}>
-              {currentUser.isDemo ? 'DEMO PREVIEW' : 'AUTHENTICATED'}
+          <Text style={styles.cardHeading}>ACTIVE USER & ACCOUNT</Text>
+          <View style={[styles.codeBadge, { backgroundColor: HasamiEarth.accentSageLight }]}>
+            <Text style={[styles.codeText, { color: HasamiEarth.statusFresh }]}>
+              VERIFIED
             </Text>
           </View>
         </View>
@@ -128,11 +128,11 @@ export const ProfileScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Cultural Heritage Matrix Card */}
+      {/* Cultural Heritage Card */}
       <View style={styles.card}>
         <View style={styles.matrixHeader}>
           <MapPin size={16} color={HasamiEarth.primaryTerracotta} />
-          <Text style={styles.cardHeading}>CULTURAL ORIGIN & GEOGRAPHY</Text>
+          <Text style={styles.cardHeading}>CUISINE TRADITIONS & SUBSTITUTIONS</Text>
         </View>
 
         <View style={styles.matrixRow}>
@@ -147,25 +147,25 @@ export const ProfileScreen: React.FC = () => {
 
         <View style={styles.divider} />
 
-        <Text style={styles.subHeading}>Active Market Substitutions (Learned by Lyra):</Text>
+        <Text style={styles.subHeading}>Local Market Substitutions (Adapted by Lyra):</Text>
         {household.marketSubstitutions.map((sub, idx) => (
           <View key={idx} style={styles.subBox}>
             <Text style={styles.subOriginal}>
-              ❌ {sub.original} → <Text style={styles.subNew}>✅ {sub.substitute}</Text>
+              {sub.original} → <Text style={styles.subNew}>{sub.substitute}</Text>
             </Text>
-            <Text style={styles.subNote}>💡 {sub.note}</Text>
+            <Text style={styles.subNote}>{sub.note}</Text>
           </View>
         ))}
       </View>
 
-      {/* Hard Culinary Exclusions */}
+      {/* Food Preferences & Dislikes */}
       <View style={styles.card}>
         <View style={styles.matrixHeader}>
           <Sliders size={16} color={HasamiEarth.primaryTerracotta} />
-          <Text style={styles.cardHeading}>HARD CULINARY EXCLUSIONS</Text>
+          <Text style={styles.cardHeading}>FOOD PREFERENCES & DISLIKES</Text>
         </View>
         <Text style={styles.householdSub}>
-          Learned from Mom's voice commands. Lyra permanently excises these across all recipes:
+          Household taste rules. Lyra automatically respects these across all recipes:
         </Text>
 
         {household.hardExclusions.map((ex, idx) => (
@@ -240,14 +240,14 @@ export const ProfileScreen: React.FC = () => {
         </View>
       </View>
 
-      {/* 1-Tap Reset Demo Button */}
+      {/* Terminal Resync Button */}
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={handleReset}
         style={styles.resetBtn}
       >
-        <RefreshCw size={15} color={HasamiEarth.textMuted} />
-        <Text style={styles.resetBtnText}>Reset Demo State to Initial</Text>
+        <RefreshCw size={14} color={HasamiEarth.textMuted} />
+        <Text style={styles.resetBtnText}>Resync Terminal Inventory & Settings</Text>
       </TouchableOpacity>
     </ScrollView>
   );

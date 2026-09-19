@@ -55,10 +55,10 @@ export const RemoteScreen: React.FC = () => {
       <View style={styles.statusBanner}>
         <View style={styles.statusLeft}>
           <Wifi size={16} color={HasamiEarth.statusFresh} />
-          <Text style={styles.statusTitle}>ZEKOS KITCHEN POD MIRROR</Text>
+          <Text style={styles.statusTitle}>KITCHEN POD TERMINAL</Text>
         </View>
         <View style={styles.latencyBadge}>
-          <Text style={styles.latencyText}>{pod.localLanLatencyMs}ms Local Wi-Fi</Text>
+          <Text style={styles.latencyText}>Connected • Local Wi-Fi</Text>
         </View>
       </View>
 
@@ -95,7 +95,7 @@ export const RemoteScreen: React.FC = () => {
             style={styles.whistlePlusBtn}
           >
             <Plus size={13} color={HasamiEarth.textOnPrimary} />
-            <Text style={styles.whistlePlusText}>Simulate Whistle</Text>
+            <Text style={styles.whistlePlusText}>+1 Whistle</Text>
           </TouchableOpacity>
         </View>
 
@@ -111,6 +111,31 @@ export const RemoteScreen: React.FC = () => {
           <View style={styles.timerBadge}>
             <Text style={styles.timerBadgeText}>Slow Flame</Text>
           </View>
+        </View>
+      </View>
+
+      {/* Indian Kitchen Smart Timer Presets */}
+      <View style={styles.presetTimersCard}>
+        <Text style={styles.presetTimersHeader}>QUICK INDIAN COOKING TIMERS</Text>
+        <View style={styles.presetGrid}>
+          {[
+            { label: 'Chai Boil', time: '4m' },
+            { label: 'Chawal Dum', time: '12m' },
+            { label: 'Tadka Sputter', time: '45s' },
+            { label: 'Dal Simmer', time: '15m' },
+          ].map((preset, idx) => (
+            <TouchableOpacity
+              key={idx}
+              activeOpacity={0.7}
+              onPress={() => {
+                Alert.alert('Timer Started', `${preset.label} timer (${preset.time}) synchronized to kitchen terminal screen.`);
+              }}
+              style={styles.presetBtn}
+            >
+              <Text style={styles.presetBtnLabel}>{preset.label}</Text>
+              <Text style={styles.presetBtnTime}>{preset.time}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
 
@@ -504,5 +529,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 10,
+  },
+  presetTimersCard: {
+    backgroundColor: HasamiEarth.surfaceLinen,
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: HasamiEarth.borderSand,
+    marginBottom: 16,
+  },
+  presetTimersHeader: {
+    fontSize: 9,
+    fontWeight: '700',
+    letterSpacing: 1.0,
+    color: HasamiEarth.textMuted,
+    marginBottom: 10,
+  },
+  presetGrid: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  presetBtn: {
+    flex: 1,
+    backgroundColor: HasamiEarth.canvasBone,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: HasamiEarth.borderSand,
+    alignItems: 'center',
+  },
+  presetBtnLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: HasamiEarth.textEspresso,
+    textAlign: 'center',
+  },
+  presetBtnTime: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: HasamiEarth.primaryTerracotta,
+    marginTop: 3,
   },
 });

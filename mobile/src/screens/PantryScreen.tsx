@@ -19,31 +19,23 @@ import { StorageZone } from '../types';
 
 export const PantryScreen: React.FC = () => {
   const { pantry, setMascotEmotion } = useZekosStore();
-  const [selectedZone, setSelectedZone] = useState<StorageZone | 'all'>('all');
+  const [selectedZone, setSelectedZone] = useState<StorageZone | 'all' | 'expiring'>('all');
+
+  const expiringCount = pantry.filter((item) => item.daysRemaining <= 2).length;
 
   const filteredItems =
     selectedZone === 'all'
       ? pantry
+      : selectedZone === 'expiring'
+      ? pantry.filter((item) => item.daysRemaining <= 2)
       : pantry.filter((item) => item.storageZone === selectedZone);
 
   const handleSimulateDelivery = () => {
     setMascotEmotion('toast_30_fresh_herbs_stem');
     Alert.alert(
-      'Zepto Delivery Synced!',
-      '1x Nandini Milk (1L) and 1x Curry Leaves added to Crisper.\nInventory updated in 0ms.',
+      'Delivery Order Synced',
+      '1x Nandini Milk (1L) and Fresh Coriander added to Refrigerator stock.',
       [{ text: 'Great' }]
-    );
-  };
-
-  const handleVoiceCalibration = () => {
-    setMascotEmotion('toast_10_thinking_question');
-    Alert.alert(
-      'Voice Micro-Calibration',
-      'Lyra asks: "Mom, do you still have enough potatoes for dinner?"\n(Simulates 5-second acoustic calibration)',
-      [
-        { text: 'Yes, have 2kg', onPress: () => setMascotEmotion('toast_02_excited_cheer') },
-        { text: 'Need more', onPress: () => setMascotEmotion('toast_08_surprised_exclamation') },
-      ]
     );
   };
 
@@ -52,39 +44,47 @@ export const PantryScreen: React.FC = () => {
       {/* Header Banner */}
       <View style={styles.headerBox}>
         <View style={styles.headerLeft}>
-          <Text style={styles.headerTitle}>LIVING INVENTORY & DECAY</Text>
-          <Text style={styles.headerSub}>Tracks biological decay half-lives to eliminate waste</Text>
+          <Text style={styles.headerTitle}>KITCHEN PANTRY & FRESHNESS</Text>
+          <Text style={styles.headerSub}>Real-time stock across refrigerator, baskets and dry pantry</Text>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={handleVoiceCalibration}
-          style={styles.calibrateBtn}
-        >
-          <Text style={styles.calibrateBtnText}>Calibrate</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Storage Zone Selector */}
       <View style={styles.zoneRow}>
-        {[
-          { key: 'all', label: 'All Zones' },
-          { key: 'crisper', label: '❄️ Crisper' },
-          { key: 'counter', label: '🧺 Counter' },
-          { key: 'vault', label: '🏺 Vault' },
-        ].map((zone) => {
-          const isSelected = selectedZone === zone.key;
-          return (
-            <TouchableOpacity
-              key={zone.key}
-              onPress={() => setSelectedZone(zone.key as any)}
-              style={[styles.zonePill, isSelected && styles.zonePillActive]}
-            >
-              <Text style={[styles.zonePillText, isSelected && styles.zonePillTextActive]}>
-                {zone.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.zoneScroll}>
+          {[
+            { key: 'all', label: 'All Items' },
+            { key: 'expiring', label: `Expiring Soon (${expiringCount})` },
+            { key: 'crisper', label: 'Cold Refrigerator' },
+            { key: 'counter', label: 'Counter Baskets' },
+            { key: 'vault', label: 'Dry Staples' },
+          ].map((zone) => {
+            const isSelected = selectedZone === zone.key;
+            return (
+              <TouchableOpacity
+                key={zone.key}
+                onPress={() => setSelectedZone(zone.key as any)}
+                style={[
+                  styles.zonePill,
+                  isSelected && styles.zonePillActive,
+                  zone.key === 'expiring' && styles.expiringPill,
+                  zone.key === 'expiring' && isSelected && styles.expiringPillActive,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.zonePillText,
+                    isSelected && styles.zonePillTextActive,
+                    zone.key === 'expiring' && styles.expiringPillText,
+                    zone.key === 'expiring' && isSelected && styles.expiringPillTextActive,
+                  ]}
+                >
+                  {zone.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
       </View>
 
       {/* Quick-Commerce Sync Card */}
@@ -94,16 +94,16 @@ export const PantryScreen: React.FC = () => {
         style={styles.deliverySyncCard}
       >
         <View style={styles.deliveryIcon}>
-          <Truck size={20} color={HasamiEarth.primaryTerracotta} />
+          <Truck size={18} color={HasamiEarth.primaryTerracotta} />
         </View>
         <View style={styles.deliveryTextCol}>
-          <Text style={styles.deliveryTitle}>Quick Commerce Delivery Ingress</Text>
+          <Text style={styles.deliveryTitle}>Quick Commerce Auto-Sync</Text>
           <Text style={styles.deliverySub}>
-            Auto-syncs digital invoices from Zepto, Blinkit & Swiggy Instamart
+            Digital invoices from Zepto, Blinkit & Swiggy update stock automatically
           </Text>
         </View>
         <View style={styles.syncBadge}>
-          <Text style={styles.syncBadgeText}>Synced</Text>
+          <Text style={styles.syncBadgeText}>Active</Text>
         </View>
       </TouchableOpacity>
 
@@ -125,7 +125,13 @@ export const PantryScreen: React.FC = () => {
                 <View style={styles.itemMetaRow}>
                   <Text style={styles.itemQty}>{item.quantity}</Text>
                   <Text style={styles.metaDot}>•</Text>
-                  <Text style={styles.itemZone}>{item.storageZone.toUpperCase()}</Text>
+                  <Text style={styles.itemZone}>
+                    {item.storageZone === 'crisper'
+                      ? 'REFRIGERATOR'
+                      : item.storageZone === 'counter'
+                      ? 'BASKET'
+                      : 'DRY STAPLE'}
+                  </Text>
                 </View>
               </View>
 
@@ -206,18 +212,20 @@ const styles = StyleSheet.create({
     color: HasamiEarth.textEspresso,
   },
   zoneRow: {
-    flexDirection: 'row',
-    gap: 8,
     marginBottom: 16,
   },
+  zoneScroll: {
+    gap: 8,
+  },
   zonePill: {
-    flex: 1,
-    paddingVertical: 8,
-    borderRadius: 12,
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    borderRadius: 20,
     backgroundColor: HasamiEarth.surfaceLinen,
     borderWidth: 1,
     borderColor: HasamiEarth.borderSand,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   zonePillActive: {
     backgroundColor: HasamiEarth.textEspresso,
@@ -229,6 +237,21 @@ const styles = StyleSheet.create({
     color: HasamiEarth.textMuted,
   },
   zonePillTextActive: {
+    color: HasamiEarth.canvasBone,
+  },
+  expiringPill: {
+    borderColor: HasamiEarth.accentOchre,
+    backgroundColor: HasamiEarth.accentOchreLight,
+  },
+  expiringPillActive: {
+    backgroundColor: HasamiEarth.primaryTerracotta,
+    borderColor: HasamiEarth.primaryTerracotta,
+  },
+  expiringPillText: {
+    color: HasamiEarth.primaryTerracotta,
+    fontWeight: '700',
+  },
+  expiringPillTextActive: {
     color: HasamiEarth.canvasBone,
   },
   deliverySyncCard: {

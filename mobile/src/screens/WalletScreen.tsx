@@ -43,19 +43,19 @@ export const WalletScreen: React.FC = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      {/* Pine Labs P3P Security Header */}
+      {/* Security Banner */}
       <View style={styles.securityBanner}>
         <ShieldCheck size={16} color={HasamiEarth.statusFresh} />
-        <Text style={styles.securityText}>PINE LABS P3P AUTONOMOUS COMMERCE PROTOCOL</Text>
+        <Text style={styles.securityText}>DEDICATED GROCERY FUND • MERCHANT LOCKED</Text>
       </View>
 
       {/* Hero Balance Card */}
       <View style={styles.balanceCard}>
-        <Text style={styles.balanceHeading}>HOUSEHOLD KITCHEN WALLET</Text>
+        <Text style={styles.balanceHeading}>HOUSEHOLD GROCERY BALANCE</Text>
         <Text style={styles.balanceAmount}>
           ₹ {wallet.balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
         </Text>
-        <Text style={styles.balanceSub}>Autonomous JIT micro-grocery procurement</Text>
+        <Text style={styles.balanceSub}>Automated replenishment for household kitchen essentials</Text>
 
         {/* Quick Top-Up Pills */}
         <View style={styles.topUpRow}>
@@ -73,18 +73,31 @@ export const WalletScreen: React.FC = () => {
         </View>
       </View>
 
-      {/* Grantex Spend Guardrail Card */}
+      {/* Monthly Waste-Savings ROI Card */}
+      <View style={styles.savingsRoiCard}>
+        <View style={styles.savingsIconBadge}>
+          <Sparkles size={16} color={HasamiEarth.statusFresh} />
+        </View>
+        <View style={styles.savingsTextCol}>
+          <Text style={styles.savingsTitle}>₹1,420 Saved This Month</Text>
+          <Text style={styles.savingsSub}>
+            Estimated food savings by consuming vegetables and dairy before spoilage.
+          </Text>
+        </View>
+      </View>
+
+      {/* Daily Spend Guardrail Card */}
       <View style={styles.guardrailCard}>
         <View style={styles.guardrailTop}>
           <View>
-            <Text style={styles.guardrailTitle}>GRANTEX DAILY SPEND CEILING</Text>
+            <Text style={styles.guardrailTitle}>DAILY SPEND LIMIT & PROTECTION</Text>
             <Text style={styles.guardrailLimit}>
               ₹{wallet.todaySpendSoFar} spent of ₹{wallet.dailySpendLimit} limit today
             </Text>
           </View>
           <View style={styles.lockBadge}>
             <Lock size={12} color={HasamiEarth.statusFresh} />
-            <Text style={styles.lockBadgeText}>MCC 5411 Lock</Text>
+            <Text style={styles.lockBadgeText}>Groceries Only</Text>
           </View>
         </View>
 
@@ -102,7 +115,7 @@ export const WalletScreen: React.FC = () => {
         </View>
 
         <Text style={styles.guardrailNote}>
-          Hardware lock: Funds can only be debited by Quick Commerce Groceries (Zepto / Blinkit / Instamart). Never leaked or misrouted.
+          Hardware lock: Funds can strictly be debited by Quick Commerce groceries (Zepto / Blinkit / Instamart). Never misrouted.
         </Text>
       </View>
 
@@ -352,5 +365,38 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     color: HasamiEarth.textEspresso,
+  },
+  savingsRoiCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: HasamiEarth.surfaceLinen,
+    padding: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: HasamiEarth.accentSage,
+    marginBottom: 16,
+    gap: 12,
+  },
+  savingsIconBadge: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: HasamiEarth.accentSageLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  savingsTextCol: {
+    flex: 1,
+  },
+  savingsTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: HasamiEarth.statusFresh,
+  },
+  savingsSub: {
+    fontSize: 11,
+    color: HasamiEarth.textMuted,
+    marginTop: 2,
+    lineHeight: 15,
   },
 });

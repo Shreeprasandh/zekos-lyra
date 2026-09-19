@@ -16,9 +16,19 @@ interface ZekosStoreState {
   activeTab: 'home' | 'pantry' | 'remote' | 'wallet' | 'profile';
   setActiveTab: (tab: 'home' | 'pantry' | 'remote' | 'wallet' | 'profile') => void;
 
-  // Active Mascot State
+  // Active Mascot State & Sleep Engine
   currentMascotEmotion: ToastEmotion;
+  isMascotSleeping: boolean;
   setMascotEmotion: (emotion: ToastEmotion) => void;
+  setMascotSleeping: (sleeping: boolean) => void;
+
+  // Conversational AI Chat & Voice Assistant
+  chatModalVisible: boolean;
+  setChatModalVisible: (visible: boolean) => void;
+
+  // Widgets Preview Modal
+  widgetsModalVisible: boolean;
+  setWidgetsModalVisible: (visible: boolean) => void;
 
   // User & Authentication
   currentUser: UserProfile;
@@ -44,6 +54,7 @@ interface ZekosStoreState {
   meals: Record<string, MealProposal>;
   approveMeal: (mealId: string) => void;
   swapMeal: (mealId: string) => void;
+  startCookingMeal: (mealId: string) => void;
 
   // Living Pantry
   pantry: PantryItem[];
@@ -216,7 +227,26 @@ export const useZekosStore = create<ZekosStoreState>((set) => ({
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   currentMascotEmotion: 'toast_01_smile_neutral',
+  isMascotSleeping: false,
   setMascotEmotion: (emotion) => set({ currentMascotEmotion: emotion }),
+  setMascotSleeping: (sleeping) =>
+    set({
+      isMascotSleeping: sleeping,
+      currentMascotEmotion: sleeping ? 'toast_40_sleeping_zzz' : 'toast_01_smile_neutral',
+    }),
+
+  // Conversational AI Chat & Voice Assistant Modal
+  chatModalVisible: false,
+  setChatModalVisible: (visible) =>
+    set({
+      chatModalVisible: visible,
+      isMascotSleeping: false,
+      currentMascotEmotion: visible ? 'toast_02_excited_cheer' : 'toast_01_smile_neutral',
+    }),
+
+  // Widgets Preview Modal
+  widgetsModalVisible: false,
+  setWidgetsModalVisible: (visible) => set({ widgetsModalVisible: visible }),
 
   // User & Authentication
   currentUser: INITIAL_USER,
@@ -352,6 +382,22 @@ export const useZekosStore = create<ZekosStoreState>((set) => ({
           [mealId]: { ...meal, ...alt },
         },
         currentMascotEmotion: 'toast_03_winking_sparkle',
+      };
+    }),
+
+  startCookingMeal: (mealId) =>
+    set((state) => {
+      const meal = state.meals[mealId] || state.meals['dinner_today'];
+      return {
+        activeTab: 'remote',
+        pod: {
+          ...state.pod,
+          activeDish: meal.title,
+          currentStepNumber: 1,
+          totalSteps: 4,
+          currentStepText: `Begin preparation: ${meal.ingredients.slice(0, 3).join(', ')}.`,
+        },
+        currentMascotEmotion: 'toast_26_chef_hat_spatula',
       };
     }),
 

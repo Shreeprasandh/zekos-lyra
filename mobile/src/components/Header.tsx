@@ -1,35 +1,83 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
 import { HasamiEarth } from '../theme/colors';
 import { BRAND_ASSETS, TOAST_EMOTIONS } from '../theme/mascotRegistry';
 import { useZekosStore } from '../store/useZekosStore';
-import { ToastEmotion } from '../types';
 
 export const Header: React.FC = () => {
   const {
     currentMascotEmotion,
+    isMascotSleeping,
+    setMascotSleeping,
     setMascotEmotion,
     household,
     pod,
-    currentUser,
-    setAuthModalVisible,
+    setChatModalVisible,
   } = useZekosStore();
 
-  // Emotion quick cycle on mascot tap
-  const cycleEmotion = () => {
-    const sequence: ToastEmotion[] = [
-      'toast_01_smile_neutral',
-      'toast_02_excited_cheer',
-      'toast_05_coffee_mug',
-      'toast_26_chef_hat_spatula',
-      'toast_35_sick_wrapped_blanket',
-      'toast_09_cool_sunglasses',
-    ];
-    const nextIdx = (sequence.indexOf(currentMascotEmotion) + 1) % sequence.length;
-    setMascotEmotion(sequence[nextIdx]);
+  const breathAnim = useRef(new Animated.Value(1)).current;
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 20-Second Ambient Inactivity Sleep Engine
+  const resetIdleTimer = () => {
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    if (isMascotSleeping) {
+      setMascotSleeping(false);
+    }
+    idleTimerRef.current = setTimeout(() => {
+      setMascotSleeping(true);
+    }, 20000); // 20 seconds of ambient silence
   };
 
-  const mascotSource = TOAST_EMOTIONS[currentMascotEmotion] || BRAND_ASSETS.mainMascot;
+  useEffect(() => {
+    resetIdleTimer();
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, []);
+
+  // Subtle breathing pulse while sleeping
+  useEffect(() => {
+    if (isMascotSleeping) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(breathAnim, {
+            toValue: 0.6,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(breathAnim, {
+            toValue: 1.0,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    } else {
+      breathAnim.setValue(1);
+    }
+  }, [isMascotSleeping]);
+
+  // Handle Mascot Tap: Wake up & Open Conversational Chat
+  const handleMascotPress = () => {
+    resetIdleTimer();
+    setMascotSleeping(false);
+    setMascotEmotion('toast_02_excited_cheer');
+    setChatModalVisible(true);
+  };
+
+  const mascotSource = isMascotSleeping
+    ? TOAST_EMOTIONS['toast_40_sleeping_zzz']
+    : TOAST_EMOTIONS[currentMascotEmotion] || BRAND_ASSETS.mainMascot;
 
   return (
     <View style={styles.container}>
@@ -40,29 +88,42 @@ export const Header: React.FC = () => {
           resizeMode="contain"
         />
         <View style={styles.statusRow}>
-          <View style={[styles.statusDot, { backgroundColor: pod.isConnected ? HasamiEarth.statusFresh : HasamiEarth.statusExpiring }]} />
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => setAuthModalVisible(true)}
-            style={styles.accountBadge}
-          >
-            <Text style={styles.accountBadgeText}>
-              {currentUser.isDemo ? 'DEMO' : 'ACTIVE'} • {currentUser.name}
-            </Text>
-          </TouchableOpacity>
+          <View
+            style={[
+              styles.statusDot,
+              {
+                backgroundColor: pod.isConnected
+                  ? HasamiEarth.statusFresh
+                  : HasamiEarth.statusExpiring,
+              },
+            ]}
+          />
+          <Text style={styles.locationText}>
+            {household.name} • Kitchen Pod Connected
+          </Text>
         </View>
       </View>
 
       <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={cycleEmotion}
-        style={styles.mascotWrapper}
+        activeOpacity={0.7}
+        onPress={handleMascotPress}
+        style={[
+          styles.mascotWrapper,
+          isMascotSleeping && styles.mascotSleepingWrapper,
+        ]}
       >
-        <Image
-          source={mascotSource}
-          style={styles.mascotImage}
-          resizeMode="contain"
-        />
+        <Animated.View style={{ opacity: breathAnim }}>
+          <Image
+            source={mascotSource}
+            style={styles.mascotImage}
+            resizeMode="contain"
+          />
+        </Animated.View>
+        {isMascotSleeping && (
+          <View style={styles.sleepingZzzBadge}>
+            <Text style={styles.sleepingZzzText}>zzz</Text>
+          </View>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -74,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 14,
+    paddingTop: 12,
     paddingBottom: 14,
     backgroundColor: HasamiEarth.canvasBone,
     borderBottomWidth: 1,
@@ -82,16 +143,18 @@ const styles = StyleSheet.create({
   },
   leftColumn: {
     flex: 1,
+    justifyContent: 'center',
   },
   logo: {
-    width: 140,
-    height: 38,
+    width: 145,
+    height: 36,
     alignSelf: 'flex-start',
+    marginBottom: 2,
   },
   statusRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 3,
+    marginTop: 2,
   },
   statusDot: {
     width: 6,
@@ -106,20 +169,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0.2,
   },
-  accountBadge: {
-    backgroundColor: HasamiEarth.surfaceLinen,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: HasamiEarth.borderSand,
-  },
-  accountBadgeText: {
-    fontSize: 10,
-    color: HasamiEarth.textMuted,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-  },
   mascotWrapper: {
     width: 48,
     height: 48,
@@ -129,10 +178,31 @@ const styles = StyleSheet.create({
     borderColor: HasamiEarth.borderSand,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 2,
+    position: 'relative',
+  },
+  mascotSleepingWrapper: {
+    borderColor: HasamiEarth.borderLight,
+    backgroundColor: HasamiEarth.canvasBone,
   },
   mascotImage: {
     width: 42,
     height: 42,
+  },
+  sleepingZzzBadge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    backgroundColor: HasamiEarth.surfaceLinen,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: HasamiEarth.borderSand,
+  },
+  sleepingZzzText: {
+    fontSize: 8,
+    fontWeight: '700',
+    color: HasamiEarth.textMuted,
+    fontStyle: 'italic',
   },
 });

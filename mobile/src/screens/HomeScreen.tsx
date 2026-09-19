@@ -6,32 +6,29 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Alert,
 } from 'react-native';
 import {
-  Check,
+  ChefHat,
   RefreshCw,
   Clock,
-  AlertTriangle,
   Share2,
-  Users,
+  LayoutGrid,
   Sparkles,
 } from 'lucide-react-native';
 import { HasamiEarth } from '../theme/colors';
 import { TOAST_EMOTIONS } from '../theme/mascotRegistry';
 import { useZekosStore } from '../store/useZekosStore';
-import { GlanceBannerWidget } from '../components/widgets/GlanceBannerWidget';
-import { HearthSquareWidget } from '../components/widgets/HearthSquareWidget';
 
 export const HomeScreen: React.FC = () => {
   const {
     meals,
     members,
+    currentUser,
     toggleAttendance,
-    approveMeal,
     swapMeal,
-    setMascotEmotion,
+    startCookingMeal,
     setReelModalVisible,
+    setWidgetsModalVisible,
   } = useZekosStore();
 
   const [activeSlot, setActiveSlot] = useState<'dinner' | 'lunch' | 'tiffin'>('dinner');
@@ -45,23 +42,32 @@ export const HomeScreen: React.FC = () => {
 
   const meal = meals[mealKey] || meals['dinner_today'];
 
-  const handleShareReelPress = () => {
-    setMascotEmotion('toast_10_thinking_question');
-    setReelModalVisible(true);
-  };
+  const homeMembersCount = members.filter((m) => m.attendance === 'home').length;
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      {/* Slot Selector Pills */}
+      {/* Warm Personal Greeting */}
+      <View style={styles.greetingRow}>
+        <View>
+          <Text style={styles.greetingTitle}>
+            Good evening, {currentUser.name.split(' ')[0]}
+          </Text>
+          <Text style={styles.greetingSub}>
+            Tonight's home dining plan for {homeMembersCount} family members
+          </Text>
+        </View>
+      </View>
+
+      {/* Clean Slot Selector */}
       <View style={styles.slotRow}>
         {(['tiffin', 'lunch', 'dinner'] as const).map((slot) => {
           const isSelected = activeSlot === slot;
           const label =
             slot === 'tiffin'
-              ? '🍱 6:45 AM Tiffin'
+              ? 'Tiffin'
               : slot === 'lunch'
-              ? '☀️ Lunch'
-              : '🌙 Dinner';
+              ? 'Lunch'
+              : 'Dinner';
           return (
             <TouchableOpacity
               key={slot}
@@ -81,82 +87,77 @@ export const HomeScreen: React.FC = () => {
         })}
       </View>
 
-      {/* Hero Meal Proposal Card */}
-      <View style={styles.heroCard}>
-        <View style={styles.heroTopRow}>
-          <View style={styles.slotBadge}>
-            <Text style={styles.slotBadgeText}>
-              {activeSlot.toUpperCase()} PROPOSAL
+      {/* Main Meal Card (Human-Centric Hearth) */}
+      <View style={styles.mealCard}>
+        <View style={styles.mealTopRow}>
+          <View style={styles.dishInfoCol}>
+            <Text style={styles.mealSlotLabel}>
+              {activeSlot.toUpperCase()}
             </Text>
+            <Text style={styles.mealTitle}>{meal.title}</Text>
+            <Text style={styles.mealSubtitle}>{meal.subtitle}</Text>
           </View>
           <Image
             source={TOAST_EMOTIONS[meal.emotionKey || 'toast_26_chef_hat_spatula']}
-            style={styles.heroMascot}
+            style={styles.mealMascot}
             resizeMode="contain"
           />
         </View>
 
-        <Text style={styles.heroTitle}>{meal.title}</Text>
-        <Text style={styles.heroSubtitle}>{meal.subtitle}</Text>
-
+        {/* Quiet Meta Line */}
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
             <Clock size={13} color={HasamiEarth.textMuted} />
-            <Text style={styles.metaText}>{meal.prepTimeMinutes} mins prep</Text>
+            <Text style={styles.metaText}>{meal.prepTimeMinutes} mins</Text>
           </View>
-          <View style={styles.metaItem}>
-            <Users size={13} color={HasamiEarth.textMuted} />
-            <Text style={styles.metaText}>{meal.servings} portions</Text>
-          </View>
+          <Text style={styles.metaDot}>•</Text>
+          <Text style={styles.metaText}>{meal.servings} portions</Text>
           {meal.clearsPerishablesText && (
-            <View style={[styles.metaItem, styles.wasteTag]}>
-              <Sparkles size={12} color={HasamiEarth.statusFresh} />
-              <Text style={styles.wasteText}>Zero Waste</Text>
-            </View>
+            <>
+              <Text style={styles.metaDot}>•</Text>
+              <Text style={styles.perishableHighlight}>
+                {meal.clearsPerishablesText}
+              </Text>
+            </>
           )}
         </View>
 
-        {/* Ingredients Bullet Strip */}
+        {/* Minimal Ingredient Preview */}
         <View style={styles.ingredientBox}>
-          <Text style={styles.ingredientHeading}>INGREDIENTS UTILIZED:</Text>
-          <Text style={styles.ingredientList} numberOfLines={2}>
+          <Text style={styles.ingredientList} numberOfLines={1}>
             {meal.ingredients.join(' • ')}
           </Text>
         </View>
 
-        {/* Hero Actions */}
-        <View style={styles.heroActionRow}>
+        {/* Clean Home Actions */}
+        <View style={styles.mealActionRow}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => approveMeal(meal.id)}
-            style={[styles.actionBtn, meal.isApproved ? styles.approvedBtn : styles.approveBtn]}
+            onPress={() => startCookingMeal(meal.id)}
+            style={styles.cookBtn}
           >
-            <Check size={16} color={HasamiEarth.textOnPrimary} />
-            <Text style={styles.actionBtnText}>
-              {meal.isApproved ? 'Approved for Cook' : 'Approve Meal'}
-            </Text>
+            <ChefHat size={16} color={HasamiEarth.textOnPrimary} />
+            <Text style={styles.cookBtnText}>Start Cooking</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            activeOpacity={0.8}
+            activeOpacity={0.7}
             onPress={() => swapMeal(meal.id)}
-            style={[styles.actionBtn, styles.swapBtn]}
+            style={styles.changeBtn}
           >
-            <RefreshCw size={14} color={HasamiEarth.textEspresso} />
-            <Text style={[styles.actionBtnText, { color: HasamiEarth.textEspresso }]}>
-              Swap Dish
-            </Text>
+            <RefreshCw size={13} color={HasamiEarth.textMuted} />
+            <Text style={styles.changeBtnText}>Change Dish</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* 1-Tap Attendance Row */}
+      {/* Who's Eating Tonight? */}
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>FAMILY DINNER ATTENDANCE</Text>
-        <Text style={styles.sectionHelp}>Tap to toggle who is eating at home</Text>
+        <Text style={styles.sectionTitle}>WHO'S EATING TONIGHT?</Text>
+        <Text style={styles.sectionSub}>Tap to toggle portions</Text>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.membersScroll}>
+      <View style={styles.familyGrid}>
         {members.map((m) => {
           const isHome = m.attendance === 'home';
           return (
@@ -165,66 +166,53 @@ export const HomeScreen: React.FC = () => {
               activeOpacity={0.7}
               onPress={() => toggleAttendance(m.id)}
               style={[
-                styles.memberCard,
-                isHome ? styles.memberCardHome : styles.memberCardOut,
+                styles.memberPill,
+                isHome ? styles.memberPillHome : styles.memberPillOut,
               ]}
             >
               <View
                 style={[
-                  styles.avatarCircle,
-                  { backgroundColor: isHome ? HasamiEarth.accentSageLight : HasamiEarth.accentOchreLight },
+                  styles.avatarDot,
+                  { backgroundColor: isHome ? HasamiEarth.statusFresh : HasamiEarth.borderSand },
                 ]}
-              >
-                <Text style={styles.avatarText}>{m.avatarInitials}</Text>
-              </View>
-              <Text style={styles.memberCardName}>{m.name}</Text>
-              <Text
-                style={[
-                  styles.memberStatusText,
-                  { color: isHome ? HasamiEarth.statusFresh : HasamiEarth.primaryTerracotta },
-                ]}
-              >
-                {isHome ? 'Eating Home' : 'Eating Out'}
+              />
+              <Text style={styles.memberName}>{m.name}</Text>
+              <Text style={styles.memberStatus}>
+                {isHome ? 'Eating home' : 'Eating out'}
               </Text>
             </TouchableOpacity>
           );
         })}
-      </ScrollView>
-
-      {/* Spoilage Urgent Alert */}
-      <View style={styles.alertCard}>
-        <View style={styles.alertIconCol}>
-          <AlertTriangle size={20} color={HasamiEarth.primaryTerracotta} />
-        </View>
-        <View style={styles.alertTextCol}>
-          <Text style={styles.alertTitle}>2 Perishables Expiring within 24 Hours</Text>
-          <Text style={styles.alertBody}>
-            Fresh Spinach (250g) and Nandini Milk (1L) will spoil if unconsumed today. Tonight's Palak Paneer plan clears them completely.
-          </Text>
-        </View>
       </View>
 
-      {/* Social Recipe Ingestion Bar */}
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={handleShareReelPress}
-        style={styles.shareReelBar}
-      >
-        <Share2 size={16} color={HasamiEarth.primaryTerracotta} />
-        <View style={styles.shareTextCol}>
-          <Text style={styles.shareBarTitle}>Share Instagram Reel or YouTube Short</Text>
-          <Text style={styles.shareBarSub}>Tap to extract recipe & cross-reference pantry inventory</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Interactive Widgets Section */}
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>MOBILE HOME SCREEN WIDGETS</Text>
-        <Text style={styles.sectionHelp}>Live interactive previews with Lyra Mascot</Text>
+      {/* Freshness Nudge (Quiet & Non-Alarmist) */}
+      <View style={styles.freshnessCard}>
+        <Sparkles size={15} color={HasamiEarth.statusFresh} />
+        <Text style={styles.freshnessText}>
+          Fresh Spinach in your crisper is best consumed tonight.
+        </Text>
       </View>
 
-      <GlanceBannerWidget />
-      <HearthSquareWidget />
+      {/* Quick Utilities Strip */}
+      <View style={styles.toolsRow}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => setReelModalVisible(true)}
+          style={styles.toolBtn}
+        >
+          <Share2 size={14} color={HasamiEarth.primaryTerracotta} />
+          <Text style={styles.toolBtnText}>Import Reel or YouTube Video</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => setWidgetsModalVisible(true)}
+          style={styles.toolBtn}
+        >
+          <LayoutGrid size={14} color={HasamiEarth.textEspresso} />
+          <Text style={styles.toolBtnText}>Widgets Preview</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -236,7 +224,20 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 20,
-    paddingBottom: 40,
+    paddingBottom: 36,
+  },
+  greetingRow: {
+    marginBottom: 16,
+  },
+  greetingTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: HasamiEarth.textEspresso,
+  },
+  greetingSub: {
+    fontSize: 12,
+    color: HasamiEarth.textMuted,
+    marginTop: 2,
   },
   slotRow: {
     flexDirection: 'row',
@@ -244,8 +245,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   slotPill: {
-    paddingVertical: 7,
-    paddingHorizontal: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
     borderRadius: 20,
     backgroundColor: HasamiEarth.surfaceLinen,
     borderWidth: 1,
@@ -263,128 +264,122 @@ const styles = StyleSheet.create({
   slotPillTextActive: {
     color: HasamiEarth.canvasBone,
   },
-  heroCard: {
+  mealCard: {
     backgroundColor: HasamiEarth.surfaceLinen,
-    borderRadius: 20,
-    padding: 18,
+    borderRadius: 24,
+    padding: 20,
     borderWidth: 1,
     borderColor: HasamiEarth.borderSand,
     marginBottom: 20,
   },
-  heroTopRow: {
+  mealTopRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    alignItems: 'flex-start',
   },
-  slotBadge: {
-    backgroundColor: HasamiEarth.canvasBone,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: HasamiEarth.borderSand,
+  dishInfoCol: {
+    flex: 1,
+    paddingRight: 10,
   },
-  slotBadgeText: {
+  mealSlotLabel: {
     fontSize: 10,
     fontWeight: '700',
     color: HasamiEarth.primaryTerracotta,
-    letterSpacing: 0.5,
+    letterSpacing: 1.0,
+    marginBottom: 4,
   },
-  heroMascot: {
-    width: 46,
-    height: 46,
-  },
-  heroTitle: {
+  mealTitle: {
     fontSize: 20,
     fontWeight: '700',
     color: HasamiEarth.textEspresso,
-    marginTop: 4,
+    lineHeight: 26,
   },
-  heroSubtitle: {
+  mealSubtitle: {
     fontSize: 12,
     color: HasamiEarth.textMuted,
-    marginTop: 2,
+    marginTop: 3,
+  },
+  mealMascot: {
+    width: 48,
+    height: 48,
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    marginVertical: 12,
+    marginTop: 12,
+    marginBottom: 10,
+    gap: 6,
   },
   metaItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
+  metaDot: {
+    color: HasamiEarth.textSubtle,
+    fontSize: 11,
+  },
   metaText: {
     fontSize: 11,
     fontWeight: '500',
     color: HasamiEarth.textMuted,
   },
-  wasteTag: {
-    backgroundColor: HasamiEarth.accentSageLight,
-    paddingHorizontal: 7,
-    paddingVertical: 2,
-    borderRadius: 6,
-  },
-  wasteText: {
-    fontSize: 10,
-    fontWeight: '700',
+  perishableHighlight: {
+    fontSize: 11,
+    fontWeight: '600',
     color: HasamiEarth.statusFresh,
   },
   ingredientBox: {
     backgroundColor: HasamiEarth.canvasBone,
-    padding: 10,
-    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: HasamiEarth.borderSand,
-    marginBottom: 14,
-  },
-  ingredientHeading: {
-    fontSize: 9,
-    fontWeight: '700',
-    color: HasamiEarth.textMuted,
-    letterSpacing: 0.5,
-    marginBottom: 2,
+    marginBottom: 16,
   },
   ingredientList: {
     fontSize: 11,
-    color: HasamiEarth.textEspresso,
-    lineHeight: 16,
+    color: HasamiEarth.textMuted,
   },
-  heroActionRow: {
+  mealActionRow: {
     flexDirection: 'row',
-    gap: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
   },
-  actionBtn: {
+  cookBtn: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 11,
-    borderRadius: 12,
-    gap: 6,
-  },
-  approveBtn: {
     backgroundColor: HasamiEarth.primaryTerracotta,
+    paddingVertical: 12,
+    borderRadius: 14,
+    gap: 8,
   },
-  approvedBtn: {
-    backgroundColor: HasamiEarth.statusFresh,
-  },
-  swapBtn: {
-    backgroundColor: HasamiEarth.canvasBone,
-    borderWidth: 1,
-    borderColor: HasamiEarth.borderSand,
-  },
-  actionBtnText: {
-    color: HasamiEarth.textOnPrimary,
+  cookBtnText: {
     fontSize: 13,
     fontWeight: '700',
+    color: HasamiEarth.textOnPrimary,
+  },
+  changeBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    gap: 5,
+  },
+  changeBtnText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: HasamiEarth.textMuted,
   },
   sectionHeader: {
-    marginTop: 10,
-    marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
   sectionTitle: {
     fontSize: 10,
@@ -392,103 +387,85 @@ const styles = StyleSheet.create({
     letterSpacing: 1.0,
     color: HasamiEarth.textMuted,
   },
-  sectionHelp: {
+  sectionSub: {
     fontSize: 11,
     color: HasamiEarth.textSubtle,
-    marginTop: 1,
   },
-  membersScroll: {
-    marginHorizontal: -20,
-    paddingHorizontal: 20,
-    marginBottom: 16,
+  familyGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 18,
   },
-  memberCard: {
-    width: 105,
-    backgroundColor: HasamiEarth.surfaceLinen,
-    borderRadius: 16,
-    padding: 12,
+  memberPill: {
+    flex: 1,
+    minWidth: '47%',
+    flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 10,
+    backgroundColor: HasamiEarth.surfaceLinen,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: HasamiEarth.borderSand,
+    gap: 8,
   },
-  memberCardHome: {
+  memberPillHome: {
     borderColor: HasamiEarth.accentSage,
   },
-  memberCardOut: {
-    borderColor: HasamiEarth.accentOchre,
+  memberPillOut: {
+    borderColor: HasamiEarth.borderLight,
+    opacity: 0.7,
   },
-  avatarCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 6,
+  avatarDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
   },
-  avatarText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: HasamiEarth.textEspresso,
-  },
-  memberCardName: {
+  memberName: {
     fontSize: 12,
     fontWeight: '600',
     color: HasamiEarth.textEspresso,
   },
-  memberStatusText: {
+  memberStatus: {
     fontSize: 10,
-    fontWeight: '700',
-    marginTop: 2,
-  },
-  alertCard: {
-    flexDirection: 'row',
-    backgroundColor: HasamiEarth.surfaceLinen,
-    borderRadius: 16,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: HasamiEarth.primaryTerracotta,
-    marginBottom: 14,
-  },
-  alertIconCol: {
-    marginRight: 10,
-    marginTop: 2,
-  },
-  alertTextCol: {
-    flex: 1,
-  },
-  alertTitle: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: HasamiEarth.primaryTerracotta,
-  },
-  alertBody: {
-    fontSize: 11,
     color: HasamiEarth.textMuted,
-    lineHeight: 16,
-    marginTop: 2,
+    marginLeft: 'auto',
   },
-  shareReelBar: {
+  freshnessCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: HasamiEarth.surfaceLinen,
-    padding: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: HasamiEarth.borderSand,
+    marginBottom: 18,
+    gap: 8,
+  },
+  freshnessText: {
+    fontSize: 11,
+    color: HasamiEarth.textEspresso,
+    flex: 1,
+  },
+  toolsRow: {
+    gap: 8,
+  },
+  toolBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: HasamiEarth.surfaceLinen,
+    paddingVertical: 11,
+    paddingHorizontal: 14,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: HasamiEarth.borderSand,
-    marginBottom: 16,
+    gap: 8,
   },
-  shareTextCol: {
-    marginLeft: 10,
-    flex: 1,
-  },
-  shareBarTitle: {
+  toolBtnText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: '600',
     color: HasamiEarth.textEspresso,
-  },
-  shareBarSub: {
-    fontSize: 10,
-    color: HasamiEarth.textMuted,
   },
 });

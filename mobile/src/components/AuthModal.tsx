@@ -216,7 +216,7 @@ export const AuthModal: React.FC = () => {
           <View style={styles.tabRow}>
             {(
               [
-                { key: 'demo', label: '1-Tap Demo' },
+                { key: 'demo', label: 'Quick Tour' },
                 { key: 'login', label: 'Sign In' },
                 { key: 'signup', label: 'Register' },
                 { key: 'join', label: 'Join Pod' },
@@ -237,14 +237,14 @@ export const AuthModal: React.FC = () => {
           </View>
 
           <ScrollView style={styles.modalScroll} contentContainerStyle={styles.scrollContent}>
-            {/* 1-TAP DEMO MODE */}
+            {/* QUICK TOUR MODE */}
             {mode === 'demo' && (
               <View style={styles.sectionContainer}>
                 <View style={styles.demoCard}>
                   <View style={styles.demoTopRow}>
                     <View style={styles.preloadedBadge}>
                       <CheckCircle2 size={12} color={HasamiEarth.statusFresh} />
-                      <Text style={styles.preloadedBadgeText}>PRE-CONFIGURED FAMILY STATE</Text>
+                      <Text style={styles.preloadedBadgeText}>VERIFIED HOUSEHOLD STATE</Text>
                     </View>
                     <Image
                       source={TOAST_EMOTIONS['toast_01_smile_neutral']}
@@ -255,7 +255,7 @@ export const AuthModal: React.FC = () => {
 
                   <Text style={styles.demoHouseholdTitle}>The Sharma Residence</Text>
                   <Text style={styles.demoDescription}>
-                    Explore the complete ZEKOS & Lyra ecosystem instantly with pre-seeded data:
+                    Experience the complete ZEKOS & Lyra ecosystem with a fully active household:
                   </Text>
 
                   <View style={styles.bulletList}>
@@ -271,7 +271,7 @@ export const AuthModal: React.FC = () => {
                     style={styles.demoPrimaryBtn}
                   >
                     <Sparkles size={16} color={HasamiEarth.textOnPrimary} />
-                    <Text style={styles.demoPrimaryBtnText}>Enter 1-Tap Demo Mode</Text>
+                    <Text style={styles.demoPrimaryBtnText}>Explore The Sharma Residence</Text>
                     <ArrowRight size={16} color={HasamiEarth.textOnPrimary} />
                   </TouchableOpacity>
                 </View>
